@@ -1,0 +1,106 @@
+<include file="./Application/home/View/Public/login_header.html" />
+<body>
+<div class="perfect">
+	<div class="pet_na"><a href="/">Pet Charm—宠之魅</a></div>
+	<div class="login_per">
+		<form action="/index.php/login/upload?id={$id}" method="post" enctype="multipart/form-data">
+			<div class="login_div">头像：<input type="file" name="picture" /></div>
+			<div class="login_div">城市：
+				<select name="prov" id="prov">
+					<foreach name="city" item="vo">
+					<option value ="{$vo.id}">{$vo.name}</option>
+					</foreach>
+				</select>
+			</div>
+			<div class="login_div">生日：
+				<select name="birthy" id="birthy">
+					<for start="$start" end="$end">
+					<option value ="{$i}">{$i}</option>
+					</for>
+				</select>
+				<select name="birthm" id="birthm">
+					<for start="1" end="13">
+					<option value ="{$i}"><if condition="($i lt 10)">0{$i}<else />{$i}</if></option>
+					</for>
+				</select>
+				<select name="birthd" id="birthd">
+					<for start="1" end="32">
+					<option value ="{$i}"><if condition="($i lt 10)">0{$i}<else />{$i}</if></option>
+					</for>
+				</select>		
+			</div>
+			<div class="login_div">邮箱：<input type="text" name="email" /></div>
+			<div class="login_div">介绍：</br><textarea rows="4" cols="40" name="say_hello"></textarea></div>
+			<div class="p_subinsert"><input type="submit" name="submit" value="提交" /> <a href="/">首页</a> <input type="reset" name="reset" value="重置" /></div>
+		</form>
+	</div>
+</div>
+</body>
+<script>
+$(function(){
+	/*
+	$('#birthy').change(function(){
+		var str='';
+		$('#birthm').children('option').remove();
+		for(var i=1;i<=12;i++)
+		{
+			if(i<10){i = '0'+i;}
+			str+='<option value ="'+i+'">'+i+'</option>'
+		}
+		$('#birthm').append(str);
+	})
+	$('#birthm').change(function(){
+		var year = $('#birthy').val();
+		var month = $('#birthm').val();
+		$.ajax({
+			dataType:'json', 
+			type:'POST',
+			url:'/index.php/ajax/getdateD',
+			data:{'year':year,'month':month},
+			cache:false,
+			success:function(day)
+			{
+				if(day.status == 1)
+				{
+					var str='';
+					$('#birthd').children('option').remove();
+					for(var i=1;i<=day.data;i++)
+					{
+						if(i<10){i = '0'+i;}
+						str+='<option value ="'+i+'">'+i+'</option>'
+					}
+					$('#birthd').append(str);
+				}
+			}
+		})
+	})
+	*/
+	$('#prov').change(function(){
+		var prov = $('#prov').val();
+		$.ajax({
+			dataType:'json', 
+			type:'POST',
+			url:'/index.php/ajax/getCity',
+			data:{'prov':prov},
+			cache:false,
+			success:function(data)
+			{
+				$("#city").remove();
+				if(data.status == 1)
+				{
+					str = '<select name="city" id="city">'
+					$.each(data.data,function(i,city){
+						str += '<option value ="'+city.id+'">'+city.name+'</option>'
+					})
+					str += '</select>'
+					$('#prov').after(str);
+				}else
+				{
+					$("#city").remove();
+				}
+			}
+		})
+	})
+})
+</script>
+</html>

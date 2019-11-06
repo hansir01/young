@@ -1,0 +1,80 @@
+<include file="./Application/Admin/View/Public/header.html" />
+<style type="text/css">
+	*{
+		margin:0px ;
+		padding:0px;
+	}
+	body{
+		border:0px; margin:0px; padding:0px;background:url(/Public/images/admin/sky1.jpg);
+	}
+	.companyname{
+		font-size:30px;
+		font-weight: bold;
+		margin-left:40px;
+		margin-top: 6px;
+		float:left;
+		color: #00FFCC;
+	}
+	#top1{
+		height:80px;
+	}
+	#setMenu{
+		width:700px;
+		height:42px;
+		margin-top:40px;
+		margin-left:300px;
+		background: #BE7AEB;
+		font-size: 16px;
+		font-weight: bold;
+	}
+	.logout {
+		margin-right: 150px;
+		text-align:right;
+		font-weight: bold;
+		margin-top: 3px;
+		font-size: 13px;
+		color: #BE7AEB;
+	}
+	.logout a{
+		text-decoration:none;
+		color: #A6E22E;
+	}
+</style>
+<script src="/Public/js/jquery-1.7.2.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+$(function(){
+	$(".exit").click(function(){
+		$.ajax({
+			dataType:'json', 
+			type:'POST',
+			url:'/admin.php/index/logout',
+			cache:false,
+			success:function(data)
+			{
+				if(data.status == 1){
+					window.location.href=parent.location.reload();
+				}else{
+					alert("退出失败！");
+				}
+			}
+		})
+	})
+})
+</script>
+<body>
+<div class="companyname">Pet Charm—宠之魅</div>
+<div class="logout">
+	<span>{$admin}，欢迎登录后台!</span>&nbsp;
+	<a class="exit" href="javascript:;">[退出]</a>
+</div>
+<div id="top1">
+	<div id="setMenu">
+		<ul class="nav nav-pills">
+			<foreach name="menu" item="v">
+			<li><a href="{$v.url}?id={$v.id}" target="menuFrame">{$v.name}</a></li>
+			</foreach>
+		</ul>
+	</div>
+</div>
+</body>
+</html>

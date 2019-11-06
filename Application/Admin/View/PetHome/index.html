@@ -1,0 +1,44 @@
+<include file="./Application/Admin/View/Public/header.html" />
+<body>
+<div class="list">
+	<div class="daohang">
+		<ol class="breadcrumb">
+			<li><a href="#">首页</a></li>
+			<li><a href="#">首页列表</a></li>
+			<li class="active">首页列表</li>
+		</ol>
+	</div>
+	<div class="tablelist">
+		<table class="table table-striped">
+			<tr>
+				<td>编号</td>
+				<td>标题</td>
+				<td>分类</td>
+				<td>内容</td>
+				<td>操作</td>
+			</tr>
+			<foreach name="result" item="vo">
+			<tr>
+				<td>{$vo.id}</td>
+				<td>{$vo.title}</td>
+				<td>{$vo.typename}</td>
+				<td>{$vo.info}</td>
+				<td><a href="/admin.php/petHome/indexEdit">编辑</a>|<a href="#">删除</a></td>
+			</tr>
+			</foreach>
+		</table>
+	</div>
+	<div class="pagelist">
+		{$pageHtml}
+	</div>
+</div>
+</body>
+<script type="text/javascript">
+$(function(){
+	$(".pagelist ul li").mouseover(function (){
+		$("li[class='active']").removeAttr("class");
+		$(this).addClass("active");
+	});
+});
+</script>
+</html>

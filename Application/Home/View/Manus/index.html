@@ -1,0 +1,109 @@
+<include file="./Application/home/View/Public/header.html" />
+<div class="xdaohang">
+	<ul>
+		<li class="on"><a href="/index.php/manus">故事区</a></li>
+		<li>|</li>
+		<li><a href="/index.php/manus/saylove">说爱区</a></li>
+		<li>|</li>
+		<li><a href="/index.php/manus/show">宠物show</a></li>
+	</ul>
+
+</div>
+
+<if condition="($sol eq 1)" >
+<div class="m" style="padding:0">
+	<form action="/index.php/manus/upstory" method="post" >
+			<div class="upload">
+				<p>story：</p>
+				<div class="uploadpic"><div>info：</div><textarea rows="5" cols="60" name="info"></textarea></div>
+				<div class="uploadpic">name：<input type="text" name="author" value="匿名"/></div>
+				<input class="submit" type="submit" name="submit" value="提交" />
+				<input class="submit" type="reset" name="submit" value="重置" />
+			</div>
+		</p>
+	</form>
+</div>
+<elseif condition="($sol eq 2)" />
+<div class="m" style="padding:0">
+	<form action="/index.php/manus/upsaylove" method="post" >
+			<div class="upload">
+				<p>sayLove：</p>
+				<div class="uploadpic">toname：<input type="text" name="name" value="匿名" /></div>
+				<div class="uploadpic"><div>info：</div><textarea rows="5" cols="60" name="info"></textarea></div>
+				<div class="uploadpic">name：<input type="text" name="toname" value="匿名"/></div>
+				<input class="submit" type="submit" name="submit" value="提交" />
+				<input class="submit" type="reset" name="submit" value="重置" />
+			</div>
+		</p>
+	</form>
+</div>
+<else />
+<div class="m" style="padding:0">
+	<form action="/index.php/manus/uppetshow" method="post" enctype="multipart/form-data">
+			<div class="upload">
+				<p>petShow：</p><br />
+				<input id="add" class="add" type="button" value="增加图片" />
+				<div class="uploadfile">
+					<input type="file" name="pictures[]" /><input class="delete_0" onClick="removeClick(0)" type="button" value="删除" />
+				</div>
+				<div class="uploadpic">title：<input type="text" name="title"/></div>
+				<div class="uploadpic">type：
+					<select name="typeid" id="type">
+						<foreach name="type" item="vo">
+						<option value ="{$vo.id}">{$vo.typename}</option>
+						</foreach>
+					</select>
+				</div>
+				<div class="uploadpic"><div>info：</div><textarea rows="5" cols="60" name="info"></textarea></div>
+				<input class="submit" type="submit" name="submit" value="提交" />
+				<input class="submit" type="reset" name="submit" value="重置" />
+			</div>
+		</p>
+	</form>
+</div>
+</if>
+<include file="./Application/home/View/Public/footer.html" />
+</body>
+<script type="text/javascript">
+$(function(){
+	var line = 1;
+	$("#add").click(function(){	
+		var str = '<div class="uploadfile"><input type="file" name="pictures[]" /><input class="delete_'+line+'" onClick="removeClick('+line+')" type="button" value="删除" /></div>'
+		$("#add").after(str);
+		line++;
+	})
+
+	$('#type').change(function(){
+		var typeid = $('#type').val();
+		$.ajax({
+			dataType:'json', 
+			type:'POST',
+			url:'/index.php/ajax/getType',
+			data:{'typeid':typeid},
+			cache:false,
+			success:function(data)
+			{
+				$("#son").remove();
+				if(data.status == 1)
+				{
+					str = '<select name="stypeid" id="son">'
+					$.each(data.data,function(i,sontype){
+						str += '<option value ="'+sontype.id+'">'+sontype.typename+'</option>'
+					})
+					str += '</select>'
+					$('#type').after(str);
+				}else
+				{
+					$("#son").remove();
+				}
+			}
+		})
+	})
+})
+function removeClick(i)
+{	
+	if($('.uploadfile').length != 1)
+		$('.delete_'+i).parent().remove()
+}
+</script>
+</html>

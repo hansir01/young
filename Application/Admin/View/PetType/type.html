@@ -1,0 +1,62 @@
+<include file="./Application/Admin/View/Public/header.html" />
+<body>
+<div class="menu">
+		<ol class="breadcrumb">
+		  <li><a href="#">首页</a></li>
+		  <li><a href="#">宠物分类</a></li>
+		  <li class="active">分类添加</li>
+		</ol>
+	<div class="catalog">
+		<div class="cataradio"><input type="radio" checked="checked" name="catalog" value="fircatalog" />一级分类操作</div>
+		<div class="cataradio"><input type="radio" name="catalog" value="seccatalog" />二级分类操作</div>
+	</div>
+	<div class="concatalog" id="fircatalog">
+		<form action="#" method="post">
+			<div class="catainput">一级分类：
+				<input type="text" name="fircatalog"/>
+			</div>
+			<div class="catasub">
+				<input type="submit" name="submit" value="提交"/>
+				<input type="reset" name="reset" value="重置"/>
+			</div>
+			<input type="hidden" name="tag" value="0"/>
+		</form>
+	</div>
+	<div class="concatalog" id="seccatalog" style="display:none">
+		<form action="#" method="post">
+			<div class ="catainput">一级分类：
+				<select name="fircid">
+					<option value="1">一级分类</option>
+					<option value="1">一级分类</option>
+					<option value="1">一级分类</option>
+				</select>
+			</div>
+			<div class ="catainput">二级分类：
+				<input type="text" name="seccatalog"/>
+			</div>
+			<div class ="catainput">分类路径：
+				<input type="text" name="securl"/>
+			</div>
+			<div class="catasub">
+				<input type="submit" name="submit" value="提交"/>
+				<input type="reset" name="reset" value="重置"/>
+			</div>
+			<input type="hidden" name="tag" value="1"/>
+		</form>
+	</div>
+</div>
+</body>
+<script type="text/javascript">
+$(function(){
+	$('.cataradio input:radio').change(function(){
+		if($('.cataradio input:checked').val() =="seccatalog"){
+			$('#fircatalog').hide();
+			$('#seccatalog').show();
+		}else{
+			$('#fircatalog').show();
+			$('#seccatalog').hide();
+		}
+	})
+})
+</script>
+</html>

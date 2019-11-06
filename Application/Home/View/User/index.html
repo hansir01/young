@@ -1,0 +1,119 @@
+<include file="./Application/home/View/Public/header.html" />
+<div class="loock_listbg">
+	<div class="most">
+		<div class="left" border="1" color="red">
+			<img src="/Uploads{$rs['top_url']}">
+			<div class="left_tit">用户名：{$rs['username']}</div>
+			<div class="introduce">介绍：{$rs['say_hello']}</div>
+			<div class="left_tit"><a href="/index.php/user/useredit">编辑资料</a></div>
+		</div>
+		<div class="right">
+			<div class="xdaohang">
+				<ul>
+					<li class="on"><a href="/index.php/user">故事区</a></li>
+					<li>|</li>
+					<li><a href="/index.php/user/saylove">说爱区</a></li>
+					<li>|</li>
+					<li><a href="/index.php/user/show">宠物show</a></li>
+				</ul>
+
+			</div>
+			<if condition="($sol eq 0)" >
+				<div class="content"><div class="edittitle" >编辑资料</div>
+					<div class="login_per">
+					<form action="" method="post" enctype="multipart/form-data">
+						<div class="login_div">头像：<input type="file" name="picture" /></div>
+						<div class="login_div">城市：
+							<select name="prov" id="prov">
+								<foreach name="city" item="vo">
+								<option value ="{$vo.id}">{$vo.name}</option>
+								</foreach>
+							</select>
+						</div>
+						<div class="login_div">生日：
+							<select name="birthy" id="birthy">
+								<for start="$start" end="$end">
+								<option value ="{$i}">{$i}</option>
+								</for>
+							</select>
+							<select name="birthm" id="birthm">
+								<for start="1" end="13">
+								<option value ="{$i}"><if condition="($i lt 10)">0{$i}<else />{$i}</if></option>
+								</for>
+							</select>
+							<select name="birthd" id="birthd">
+								<for start="1" end="32">
+								<option value ="{$i}"><if condition="($i lt 10)">0{$i}<else />{$i}</if></option>
+								</for>
+							</select>		
+						</div>
+						<div class="login_div">邮箱：<input type="text" name="email" value="{$rs['email']}"/></div>
+						<div class="login_div">介绍：</br><textarea rows="3" cols="40" name="say_hello">{$rs['say_hello']}</textarea></div>
+						<div class="subinsert"><input type="submit" name="submit" value="提交" /> <input type="reset" name="reset" value="重置" /></div>
+					</form>
+				</div>
+				</div>
+			<else />	
+				<if condition="($sol eq 1)" >
+				<div class="content">
+				<foreach name="story_data" item="vo">
+					<div class="detail">{$vo.info}</div>
+				</foreach>
+				</div>
+				<elseif condition="($sol eq 2)" />
+				<div class="content">
+				<foreach name="love_data" item="vo">
+					<div class="detail">{$vo.info}</div>
+				</foreach>
+				</div>
+				<elseif condition="($sol eq 3)" />
+				<div class="content">
+				<foreach name="show_data" item="vo">
+					<div class="detail">{$vo.title}</div>
+				</foreach>
+				</if>
+				</div>
+				<div class="user_page">
+					<div class="pagingpul_right">
+						<if condition="($totalPage gt 1)" >
+								{$pageHtml}
+						</if>
+					</div>
+				</div>
+			</if>
+		</div>
+	</div>
+</div>
+<include file="./Application/home/View/Public/footer.html" />
+</body>
+<script>
+$(function(){
+	$('#prov').change(function(){
+		var prov = $('#prov').val();
+		$.ajax({
+			dataType:'json', 
+			type:'POST',
+			url:'/index.php/ajax/getCity',
+			data:{'prov':prov},
+			cache:false,
+			success:function(data)
+			{
+				$("#city").remove();
+				if(data.status == 1)
+				{
+					str = '<select name="city" id="city">'
+					$.each(data.city,function(i,city){
+						str += '<option value ="'+city.id+'">'+city.name+'</option>'
+					})
+					str += '</select>'
+					$('#prov').after(str);
+				}else
+				{
+					$("#city").remove();
+				}
+			}
+		})
+	})
+})
+</script>
+</html>
